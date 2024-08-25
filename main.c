@@ -4,25 +4,27 @@
 
 int sharedValue = 0;
 
+//Función ejemplo para hilos de lecturas
 void *reader_thread(void *arg) {
   int i;
   for (i = 0; i < 5; i++) {
-    beginRead();  
+    beginRead();  // Llamada a la función de inicio de lectura
     printf("Reader: Value = %d\n", sharedValue);
-    endRead();   
-    sleep(1);
+    endRead();   // Llamada a la función de fin de lectura
+    sleep(1); // Sleep para simular tiempo de lectura
   }
   return NULL;
 }
 
+//Función ejemplo para hilos de escrituras
 void *writer_thread(void *arg) {
   int i;
   for (i = 0; i < 5; i++) {
-    beginWrite(); 
+    beginWrite(); // Llamada a la función de inicio de escritura
     sharedValue += 10;
     printf("Writer: Value updated to %d\n", sharedValue);
-    endWrite();  
-    sleep(1);  
+    endWrite();  //Llamada a la función de finalización de escritura
+    sleep(1);  // Sleep para simular tiempo de escritura
   }
   return NULL;
 }
@@ -111,8 +113,8 @@ void semaphoreExample(int n, int hilos){
 }
 
 int main(void){
- // readWriteExample(NULL);
-  //barrierExample(3,3);//La primera entrada son el total de threads que va a tener el programa, la segunda entrada son la cantidad de threads que va a esperar la barrera, si la cantidad de threads de la barrera es mayor que la cantidad de threads total el programa se va a bloquear y no va a dejar pasar ningun thread
+  //readWriteExample(NULL);
+  //barrierExample(2,3);//La primera entrada son el total de threads que va a tener el programa, la segunda entrada son la cantidad de threads que va a esperar la barrera, si la cantidad de threads de la barrera es mayor que la cantidad de threads total el programa se va a bloquear y no va a dejar pasar ningun thread
   //semaphoreExample(3, 25);//la primera entrada es el numero de hilos que el semaforo permitira usar un recurso, el segundo parametro es la cantidad de hilos que se van a crear.
 
   return 0;

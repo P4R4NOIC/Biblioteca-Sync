@@ -1,9 +1,9 @@
 #include <pthread.h>
 #include <stdio.h>
 
-int bCounter = 0;  
-pthread_mutex_t r; 
-pthread_mutex_t g; 
+int bCounter = 0;  // Contador de hilos de lectura iniciados para read/write lock
+pthread_mutex_t r; // Mutex de lectura
+pthread_mutex_t g; // Mutex de escritura
 
 // Semaforo
 typedef struct {
@@ -74,21 +74,21 @@ void deleteBarrier(Barrier *barrier) {
 // Read/Write Lock
 
 void beginRead(void) {
-  pthread_mutex_lock(&r);
-  bCounter++;
+  pthread_mutex_lock(&r);  //Bloqueo del hilo de lectura
+  bCounter++;              //Incremento del contador de hilos de lectura
   if (bCounter == 1)
-    pthread_mutex_lock(&g);
-  pthread_mutex_unlock(&r);
+    pthread_mutex_lock(&g);  //Bloqueo del hilo de escritura
+  pthread_mutex_unlock(&r);  //Desbloqueo del hilo de lectura
 }
 
 void endRead(void) {
-  pthread_mutex_lock(&r);
-  bCounter--;
+  pthread_mutex_lock(&r); //Bloqueo del hilo de lectura
+  bCounter--;              //Decremento del contador de hilos de lectura
   if (bCounter == 0)
-    pthread_mutex_unlock(&g);
-  pthread_mutex_unlock(&r);
+    pthread_mutex_unlock(&g); //Desbloqueo del hilo de escritura
+  pthread_mutex_unlock(&r); //Desbloqueo del hilo de lectura
 }
 
-void beginWrite(void) { pthread_mutex_lock(&g); }
+void beginWrite(void) { pthread_mutex_lock(&g); } //Bloqueo del hilo de escritura
 
-void endWrite(void) { pthread_mutex_unlock(&g); }
+void endWrite(void) { pthread_mutex_unlock(&g); } //Desbloqueo del hilo de escritura

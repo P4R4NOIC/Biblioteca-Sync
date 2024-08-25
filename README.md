@@ -25,7 +25,18 @@ Para usar el semaforo realice lo siguiente:
 
 Para usar la barrera realice lo siguiente:
 
-1. 
+1. Descomente la función barrierExample.
+2. Ingrese en el primer parámetro de la función la cantidad de hilos totales que tendrá el programa a la hora de ser ejecutado
+3. Ingrese en el segundo parámetro de la función la cantidad de hilos que va a hacer esperar la barrera
+
+Si quiere hacer su propio ejemplo de barrera es importante realizar lo siguiente:
+
+1. Crear los hilos que vea necesarios para hacer que su programa funcione correctamente con utilizando pthread_t thread_id[totalThreads]
+2. Crear una dato de tipo barrera utilizando el tipo de dato "Barrier"
+3. Crear la barrera utilizando la función createBarrier
+4. Crear los hilos y llamar a la función auxiliar del ejemplo en un ciclo for que empiece en cero y termine cuando se llegue a la cantidad total de hilos de la siguiente manera: pthread_create(&thread_id[i], NULL, barrierExampleFunc, (void*)&barrier);
+5. Hacer otro ciclo for para unir los hilos una vez que todos hayan pasado la barrera utilizando la siguiente función:  pthread_join(thread_id[i], NULL);
+6. Eliminar la barrera utilizando la función deleteBarrier
 
 ## Read-write_lock
 
