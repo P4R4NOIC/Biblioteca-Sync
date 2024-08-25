@@ -44,21 +44,28 @@ void readWriteExample(void *arg){
   pthread_mutex_destroy(&r);  
   pthread_mutex_destroy(&g);
 }
+//Función auxiliar que indica los hilos que han llegado a la barrera y luego indica cuando han pasado, despues de correr barrierAwait()
+void *barrierExampleFunc(void *arg) { 
+  Barrier *barrier = (Barrier *)arg;
+  printf("thread %ld is waiting at the barrier\n", pthread_self());
+  barrierAwait(barrier);
+  printf("The barrier is lifted, the thread %ld is running now\n",
+         pthread_self());
+  return NULL;
+}
 
+//Ejemplo de uso de barrera de hilos.
 void barrierExample(int totalThreads, int barrierThreads) {
   
- 
   pthread_t thread_id[totalThreads];
   Barrier barrier;
 
   createBarrier(&barrier, barrierThreads);
   for (int i = 0; i < totalThreads; i++){
 
-      pthread_create(&thread_id[i], NULL, thread_func, (void*)&barrier);
+      pthread_create(&thread_id[i], NULL, barrierExampleFunc, (void*)&barrier);
   }
-
-
-
+  
   for (int i = 0; i < totalThreads; i++){
 
       pthread_join(thread_id[i], NULL);
@@ -104,9 +111,9 @@ void semaphoreExample(int n, int hilos){
 }
 
 int main(void){
-  readWriteExample(NULL);
+ // readWriteExample(NULL);
   //barrierExample(3,3);//La primera entrada son el total de threads que va a tener el programa, la segunda entrada son la cantidad de threads que va a esperar la barrera, si la cantidad de threads de la barrera es mayor que la cantidad de threads total el programa se va a bloquear y no va a dejar pasar ningun thread
-  //semaphoreExample(3, 25);la primera entrada es el numero de hilos que el semaforo permitira usar un recurso, el segundo parametro es la cantidad de hilos que se van a crear.
+  //semaphoreExample(3, 25);//la primera entrada es el numero de hilos que el semaforo permitira usar un recurso, el segundo parametro es la cantidad de hilos que se van a crear.
 
   return 0;
 }

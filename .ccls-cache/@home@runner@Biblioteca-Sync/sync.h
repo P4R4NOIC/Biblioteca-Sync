@@ -30,20 +30,24 @@ void signal(semaphore *sem) {
 }
 
 // Barrera
+//Estructura general de la barrera
 typedef struct Barrier {
-  int threadAmmount;
-  pthread_mutex_t barrierLock;
-  int maxThreads;
-  pthread_cond_t conditional;
+  int threadAmmount;     // cantidad de hilos que espera la barrera
+  pthread_mutex_t barrierLock;  //bloqueador de hilos de mutex
+  int maxThreads;   // cantidad total de hilos del programa
+  pthread_cond_t conditional; //condicional que bloquea todo el programa hasta que lleguen los hilos necesarios 
 
 } Barrier;
 
+
+//Funcion que crea la barrera
 void createBarrier(Barrier *barrier, int threadAmmount) {
   pthread_mutex_init(&(barrier->barrierLock), NULL);
   barrier->threadAmmount = threadAmmount;
   barrier->maxThreads = 0;
 }
 
+//Funcion que bloquea los hilos hasta que todos hayan llegado a la barrera
 void barrierAwait(Barrier *barrier) {
 
   pthread_mutex_lock(&(barrier->barrierLock));
@@ -60,18 +64,12 @@ void barrierAwait(Barrier *barrier) {
   pthread_mutex_unlock(&(barrier->barrierLock));
 }
 
+
+//Funcion que elimina la barrera
 void deleteBarrier(Barrier *barrier) {
   pthread_mutex_destroy(&(barrier->barrierLock));
 }
 
-void *thread_func(void *arg) {
-  Barrier *barrier = (Barrier *)arg;
-  printf("thread %ld is waiting at the barrier\n", pthread_self());
-  barrierAwait(barrier);
-  printf("The barrier is lifted, the thread %ld is running now\n",
-         pthread_self());
-  return NULL;
-}
 
 // Read/Write Lock
 
