@@ -41,6 +41,9 @@ Si quiere hacer su propio ejemplo de barrera es importante realizar lo siguiente
 ## Read-write_lock
 
 Para usar el read-write lock realice lo siguiente:
+Descomente la función readWriteExample(NULL) y corra el programa.
+
+O sino realice lo siguiente:
 
 1. Cree un lock básico en mutex con la variable r
 2. Cree un lock básico en mutex con la variable g
